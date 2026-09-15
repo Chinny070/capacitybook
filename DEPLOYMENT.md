@@ -17,15 +17,14 @@ Deploy in this order:
 
 The final deployment transaction must be approved from Chinny's funded owner/deployer wallet. No private key belongs in this repository.
 
-After deployment:
+Deployed and finalized:
 
-1. verify the network reports chain ID `61999`;
-2. wait for finalized/accepted receipts;
-3. record both addresses in `.env` locally;
-4. execute the lifecycle in `docs/REVIEWER_DEMO.md`;
-5. replace `PENDING_OWNER_DEPLOYMENT` in `SUBMISSION.md` with finalized evidence;
-6. run the repository preflight;
-7. commit and push only after all checks pass.
+- CapacityBook: `0xff7D50Eb0bc99143Dcc729929B44068BC4d23281`
+- CapacityGuard: `0x01bb76Abe1EC2D0eb0000BAa947602531DA5EA3B`
+
+A first CapacityBook deployment attempt finalized as a transaction but the contract genesis itself failed (`invalid_contract`) because the source's pinned SDK hash targeted a newer GenVM generation than StudioNet's live validators currently serve. Verifying post-deployment readability (not just transaction status) caught this; see `docs/DEPLOYMENT_EVIDENCE.md` for the full account and the corrected, live-compatible redeployment.
+
+Full evidence for the reviewer-demo lifecycle is in [`docs/DEPLOYMENT_EVIDENCE.md`](docs/DEPLOYMENT_EVIDENCE.md).
 
 ## Suggested environment
 

@@ -26,22 +26,14 @@ Validators independently re-render the public evidence and independently reprodu
 
 - Network: StudioNet
 - Chain ID: `61999`
-- CapacityBook address: `PENDING_OWNER_DEPLOYMENT`
-- CapacityGuard address: `PENDING_OWNER_DEPLOYMENT`
+- CapacityBook address: `0xff7D50Eb0bc99143Dcc729929B44068BC4d23281`
+- CapacityGuard address: `0x01bb76Abe1EC2D0eb0000BAa947602531DA5EA3B`
 
 Do not substitute another chain ID when completing the deployment evidence.
 
-## Evidence to add after owner deployment
+## Deployment evidence
 
-- deployment transaction/receipt for both contracts;
-- sealed book hash;
-- finalized MATCHED demand receipt;
-- one finalized admitted reservation;
-- one finalized overlapping reservation blocked for capacity;
-- one disjoint reservation admitted;
-- consumer failure before admission and success after admission;
-- replay rejection;
-- exact commit SHA submitted for review.
+Full transaction-level evidence for every lifecycle scenario (sealing, matched/blocked/disjoint reservations, ambiguous/wrong-resource/under-reservation fail-closed outcomes, bilateral release, permissionless expiry, and CapacityGuard composability/replay protection) is in [`docs/DEPLOYMENT_EVIDENCE.md`](docs/DEPLOYMENT_EVIDENCE.md). That document also records and explains one discarded first deployment attempt whose transaction finalized but whose contract genesis actually failed (`invalid_contract`) — caught only by verifying post-deployment readability, not by transaction status alone.
 
 ## Known boundaries
 

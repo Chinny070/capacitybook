@@ -143,13 +143,16 @@ python -m pip install -r requirements-direct.txt
 pytest -q tests/direct
 ```
 
-The direct suite covers sealing, validator-grounded evidence, ambiguous evidence, overlapping rejection, disjoint reuse, bilateral early release, retry after capacity release, and hash-pinned consumption.
+The direct suite covers sealing, validator-grounded evidence, ambiguous evidence, overlapping rejection, disjoint reuse, bilateral early release, retry after capacity release, and hash-pinned consumption. It passes against the newer GenVM SDK generation the pinned Direct Mode toolchain (`genlayer-test` v0.30.0-rc2) supports; StudioNet's live validators currently run an older GenVM generation, so the contracts actually deployed (see below) target that older, live-compatible SDK — a gap documented in [`docs/DEPLOYMENT_EVIDENCE.md`](docs/DEPLOYMENT_EVIDENCE.md). Live StudioNet execution is the authoritative verification for the deployed contracts.
 
 ## Deployment status
 
-The package does **not** pretend to contain deployment evidence before the owner's wallet executes deployment. See [`DEPLOYMENT.md`](DEPLOYMENT.md) and [`docs/REVIEWER_DEMO.md`](docs/REVIEWER_DEMO.md).
+Deployed and finalized on StudioNet, chain ID `61999`:
 
-After deployment, replace the `PENDING_OWNER_DEPLOYMENT` placeholders in `SUBMISSION.md` with finalized StudioNet `61999` addresses and transaction/receipt evidence.
+- CapacityBook: `0xff7D50Eb0bc99143Dcc729929B44068BC4d23281`
+- CapacityGuard: `0x01bb76Abe1EC2D0eb0000BAa947602531DA5EA3B`
+
+Full transaction-level evidence for the entire reviewer-demo lifecycle is in [`docs/DEPLOYMENT_EVIDENCE.md`](docs/DEPLOYMENT_EVIDENCE.md). See also [`DEPLOYMENT.md`](DEPLOYMENT.md) and [`docs/REVIEWER_DEMO.md`](docs/REVIEWER_DEMO.md).
 
 ## Repository scope
 

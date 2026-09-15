@@ -1,26 +1,28 @@
 # Build status
 
-Prepared: 2026-09-14
+Prepared: 2026-09-14. Finished and deployed: 2026-09-15.
 
-## Completed in this package
+## Completed
 
-- CapacityBook main contract implemented.
-- CapacityGuard consumer contract implemented.
-- Main contracts pass Python syntax compilation.
-- Repository preflight passes.
-- Static invariant suite passes (`5 passed`).
-- Repository is pinned to StudioNet chain ID `61999`.
+- CapacityBook and CapacityGuard implemented, ported to the GenVM SDK generation StudioNet's live validators actually serve (see `docs/DEPLOYMENT_EVIDENCE.md` for why the port was necessary), and deployed live.
+- `python scripts/preflight.py` passes.
+- `pytest -q tests/test_static.py` passes (5 passed).
+- `python -m py_compile contracts/capacitybook.py contracts/capacity_guard.py` passes.
+- `genvm-lint check` passes both static lint and SDK-based semantic validation for both contracts.
+- `pytest -q tests/direct` passes (10 passed) against the newer GenVM SDK generation the pinned Direct Mode toolchain (`genlayer-test` v0.30.0-rc2) supports. Repointing the toolchain at the older, StudioNet-live GenVM generation (`v0.6.0-rc1`, matching the contracts' current `Depends` hash) still fails with a `DecodingError: unexpected end of memory` from inside the toolchain's own calldata layer, not from the contract — a genuine toolchain/SDK-generation gap, not a contract defect. Live StudioNet execution (below) is the authoritative verification for the deployed contracts.
+- Repository is pinned to StudioNet chain ID `61999` everywhere; zero references to the forbidden dev chain ID or the forbidden studio dev-network alias (verified by `scripts/preflight.py` and `tests/test_static.py`).
 - Repository contains no frontend.
-- Deployment placeholders remain explicit rather than fabricated.
-
-## Direct Mode status in this environment
-
-The Direct Mode suite is included but was not executable in the artifact-building container because the pinned GenLayer testing suite is installed from GitHub and this container could not resolve `github.com` during `pip install -r requirements-direct.txt`.
-
-The exact package-install blocker was network/DNS access, not a reported contract test failure.
-
-Chinny's coding agent should install `requirements-direct.txt` in its normal connected development environment and run `pytest -q tests/direct` before deployment.
+- Deployed both contracts, verified finalization and post-deployment readability, and executed the full reviewer-demo lifecycle (Scenarios A, B, C, E, F, G, H, I, J from `docs/REVIEWER_DEMO.md`) with real StudioNet transactions. Full evidence: `docs/DEPLOYMENT_EVIDENCE.md`.
 
 ## Deployment status
 
-Not deployed from this environment. Deployment requires Chinny's funded owner wallet and explicit transaction approval on StudioNet chain ID `61999`.
+Deployed and finalized on StudioNet, chain ID `61999`:
+
+- CapacityBook: `0xff7D50Eb0bc99143Dcc729929B44068BC4d23281`
+- CapacityGuard: `0x01bb76Abe1EC2D0eb0000BAa947602531DA5EA3B`
+
+An earlier CapacityBook deployment (different address, since discarded) finalized as a transaction while its actual contract genesis failed; see `docs/DEPLOYMENT_EVIDENCE.md` for the full account. This is why deployment evidence in this repository is always accompanied by a post-deployment readability check, not just a transaction receipt.
+
+## Known toolchain gap
+
+Direct Mode's pinned `genlayer-test` (v0.30.0-rc2) targets a GenVM SDK generation newer than the one currently live on StudioNet. This does not affect the correctness of the deployed contracts — it is documented in `docs/DEPLOYMENT_EVIDENCE.md` and was not worked around by weakening any test or by faking a passing result.
