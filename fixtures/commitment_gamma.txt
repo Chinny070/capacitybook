@@ -1,1 +1,1 @@
-Service commitment Gamma reserves two dedicated P1 responders from 13:00 UTC until 15:00 UTC on 15 September 2026, after the Alpha incident window has fully ended.
+Service commitment Gamma reserves two dedicated P1 responders from 00:00 UTC until 02:00 UTC on 16 September 2026, after the Alpha incident window has fully ended.
