@@ -1,0 +1,3 @@
+# The contract pins its GenLayer SDK dependency in the source header.
+# Install requirements-direct.txt for the Direct Mode test/lint toolchain.
+pytest>=8.0,<9

@@ -1,0 +1,1 @@
+Service commitment Delta reserves four dedicated GPU inference slots from 10:00 UTC until 12:00 UTC on 15 September 2026. No P1 incident responders are included in this commitment.

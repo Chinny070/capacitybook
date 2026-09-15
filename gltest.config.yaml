@@ -1,0 +1,15 @@
+networks:
+  default: localnet
+
+  localnet:
+    url: http://127.0.0.1:4000/api
+    leader_only: false
+
+# Remote deployment is intentionally not represented by a dev-network alias.
+# Final deployment target for this repository is StudioNet chain ID 61999.
+
+paths:
+  contracts: contracts
+  artifacts: artifacts
+
+environment: .env

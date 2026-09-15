@@ -1,0 +1,1 @@
+Service commitment Epsilon requires two dedicated P1 responders from 10:00 UTC until 12:00 UTC on 15 September 2026. Both responders must be exclusively assigned for the full incident window.
