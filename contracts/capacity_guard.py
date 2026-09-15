@@ -1,15 +1,12 @@
-# v0.1.0
-# { "Depends": "py-genlayer:5jycge4q8k23462jtb0b9fyey1s9qz928sz2nbrd9mg4sxqg2qng" }
+# v0.2.0
+# { "Depends": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6" }
 
-import genlayer as gl
-from genlayer.types import *
-from genlayer.storage import TreeMap
+from genlayer import *
 
-from dataclasses import dataclass
 import typing
 
 
-@gl.contract.interface
+@gl.contract_interface
 class ICapacityBook:
     class View:
         def is_effective(self, reservation_id: u256, expected_book_hash: str) -> bool: ...
@@ -18,16 +15,27 @@ class ICapacityBook:
         pass
 
 
-@gl.storage.allow
-@dataclass
+@allow_storage
 class ExecutionReceipt:
     caller: Address
     reservation_id: u256
     book_hash: str
     action_hash: str
 
+    def __init__(
+        self,
+        caller: Address,
+        reservation_id: u256,
+        book_hash: str,
+        action_hash: str,
+    ):
+        self.caller = caller
+        self.reservation_id = reservation_id
+        self.book_hash = book_hash
+        self.action_hash = action_hash
 
-class CapacityGuard(gl.contract.Contract):
+
+class CapacityGuard(gl.Contract):
     """Minimal consumer proving CapacityBook can gate another IC's action."""
 
     capacitybook_address: Address

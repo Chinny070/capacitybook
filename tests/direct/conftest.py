@@ -5,7 +5,7 @@ import pytest
 from gltest.direct import loader as direct_loader
 from gltest.direct.loader import deploy_contract
 
-PINNED_GENVM_BUNDLE = "v0.6.0-rc3"
+PINNED_GENVM_BUNDLE = "v0.6.0-rc1"
 
 if __import__("sys").platform == "win32":
     _inject_message_to_fd0 = direct_loader._inject_message_to_fd0

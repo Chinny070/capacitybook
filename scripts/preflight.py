@@ -38,7 +38,7 @@ contract = (ROOT / "contracts/capacitybook.py").read_text(encoding="utf-8")
 guard = (ROOT / "contracts/capacity_guard.py").read_text(encoding="utf-8")
 
 for marker in (
-    "gl.vm.run_nondet_default",
+    "gl.vm.run_nondet",
     "validator_fn",
     "gl.nondet.web.render",
     "gl.nondet.exec_prompt",

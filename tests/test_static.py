@@ -12,7 +12,7 @@ def test_chain_id_is_studionet_61999_only():
 
 
 def test_contract_has_real_custom_validator():
-    assert "gl.vm.run_nondet_default" in CONTRACT
+    assert "gl.vm.run_nondet" in CONTRACT
     assert "validator_fn" in CONTRACT
     assert "gl.nondet.web.render" in CONTRACT
     assert "gl.nondet.exec_prompt" in CONTRACT

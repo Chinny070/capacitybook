@@ -1,13 +1,10 @@
-# v0.1.0
-# { "Depends": "py-genlayer:5jycge4q8k23462jtb0b9fyey1s9qz928sz2nbrd9mg4sxqg2qng" }
+# v0.2.0
+# { "Depends": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6" }
 
-import genlayer as gl
-from genlayer.types import *
-from genlayer.storage import TreeMap
+from genlayer import *
 
 import json
 import typing
-from dataclasses import dataclass
 from datetime import datetime, timezone
 
 
@@ -63,8 +60,7 @@ CONTROL_MARKERS = (
 )
 
 
-@gl.storage.allow
-@dataclass
+@allow_storage
 class CapacityBookDefinition:
     owner: Address
     label: str
@@ -76,9 +72,30 @@ class CapacityBookDefinition:
     reservation_count: u256
     definition_hash: str
 
+    def __init__(
+        self,
+        owner: Address,
+        label: str,
+        purpose: str,
+        status: u8,
+        created_at: u256,
+        sealed_at: u256,
+        pool_count: u8,
+        reservation_count: u256,
+        definition_hash: str,
+    ):
+        self.owner = owner
+        self.label = label
+        self.purpose = purpose
+        self.status = status
+        self.created_at = created_at
+        self.sealed_at = sealed_at
+        self.pool_count = pool_count
+        self.reservation_count = reservation_count
+        self.definition_hash = definition_hash
 
-@gl.storage.allow
-@dataclass
+
+@allow_storage
 class ResourcePool:
     book_id: u256
     label: str
@@ -87,9 +104,24 @@ class ResourcePool:
     semantic_definition: str
     allocation_count: u16
 
+    def __init__(
+        self,
+        book_id: u256,
+        label: str,
+        unit_label: str,
+        capacity_units: u256,
+        semantic_definition: str,
+        allocation_count: u16,
+    ):
+        self.book_id = book_id
+        self.label = label
+        self.unit_label = unit_label
+        self.capacity_units = capacity_units
+        self.semantic_definition = semantic_definition
+        self.allocation_count = allocation_count
 
-@gl.storage.allow
-@dataclass
+
+@allow_storage
 class Reservation:
     proposer: Address
     counterparty: Address
@@ -111,9 +143,50 @@ class Reservation:
     last_blocked_pool_id: u256
     final_hash: str
 
+    def __init__(
+        self,
+        proposer: Address,
+        counterparty: Address,
+        book_id: u256,
+        book_hash: str,
+        title: str,
+        evidence_url: str,
+        start_at: u256,
+        end_at: u256,
+        status: u8,
+        created_at: u256,
+        admitted_at: u256,
+        released_at: u256,
+        demand_count: u8,
+        provider_approved: bool,
+        counterparty_approved: bool,
+        provider_release: bool,
+        counterparty_release: bool,
+        last_blocked_pool_id: u256,
+        final_hash: str,
+    ):
+        self.proposer = proposer
+        self.counterparty = counterparty
+        self.book_id = book_id
+        self.book_hash = book_hash
+        self.title = title
+        self.evidence_url = evidence_url
+        self.start_at = start_at
+        self.end_at = end_at
+        self.status = status
+        self.created_at = created_at
+        self.admitted_at = admitted_at
+        self.released_at = released_at
+        self.demand_count = demand_count
+        self.provider_approved = provider_approved
+        self.counterparty_approved = counterparty_approved
+        self.provider_release = provider_release
+        self.counterparty_release = counterparty_release
+        self.last_blocked_pool_id = last_blocked_pool_id
+        self.final_hash = final_hash
 
-@gl.storage.allow
-@dataclass
+
+@allow_storage
 class DemandLine:
     reservation_id: u256
     pool_id: u256
@@ -123,9 +196,26 @@ class DemandLine:
     reason: str
     evidence: str
 
+    def __init__(
+        self,
+        reservation_id: u256,
+        pool_id: u256,
+        declared_units: u256,
+        verdict: u8,
+        checked_at: u256,
+        reason: str,
+        evidence: str,
+    ):
+        self.reservation_id = reservation_id
+        self.pool_id = pool_id
+        self.declared_units = declared_units
+        self.verdict = verdict
+        self.checked_at = checked_at
+        self.reason = reason
+        self.evidence = evidence
 
-@gl.storage.allow
-@dataclass
+
+@allow_storage
 class Allocation:
     pool_id: u256
     reservation_id: u256
@@ -134,8 +224,24 @@ class Allocation:
     end_at: u256
     active: bool
 
+    def __init__(
+        self,
+        pool_id: u256,
+        reservation_id: u256,
+        units: u256,
+        start_at: u256,
+        end_at: u256,
+        active: bool,
+    ):
+        self.pool_id = pool_id
+        self.reservation_id = reservation_id
+        self.units = units
+        self.start_at = start_at
+        self.end_at = end_at
+        self.active = active
 
-@gl.contract.interface
+
+@gl.contract_interface
 class ICapacityBook:
     class View:
         def get_book(self, book_id: u256) -> dict[str, typing.Any]: ...
@@ -162,31 +268,31 @@ class ICapacityBook:
         def cancel_draft(self, reservation_id: u256) -> None: ...
 
 
-class BookCreated(gl.chain.Event):
+class BookCreated(gl.Event):
     def __init__(self, book_id: u256, owner: Address, /, **blob): ...
 
 
-class BookSealed(gl.chain.Event):
+class BookSealed(gl.Event):
     def __init__(self, book_id: u256, /, **blob): ...
 
 
-class ReservationOpened(gl.chain.Event):
+class ReservationOpened(gl.Event):
     def __init__(self, reservation_id: u256, book_id: u256, proposer: Address, /, **blob): ...
 
 
-class DemandChecked(gl.chain.Event):
+class DemandChecked(gl.Event):
     def __init__(self, demand_id: u256, reservation_id: u256, pool_id: u256, /, **blob): ...
 
 
-class ReservationBlocked(gl.chain.Event):
+class ReservationBlocked(gl.Event):
     def __init__(self, reservation_id: u256, pool_id: u256, /, **blob): ...
 
 
-class ReservationAdmitted(gl.chain.Event):
+class ReservationAdmitted(gl.Event):
     def __init__(self, reservation_id: u256, /, **blob): ...
 
 
-class ReservationReleased(gl.chain.Event):
+class ReservationReleased(gl.Event):
     def __init__(self, reservation_id: u256, /, **blob): ...
 
 
@@ -492,13 +598,13 @@ def semantic_demand_check(
                 return False
         return True
 
-    result = gl.vm.run_nondet_default(leader_fn, validator_fn)
+    result = gl.vm.run_nondet(leader_fn, validator_fn)
     if not isinstance(result, dict) or not valid_result_shape(result):
         raise gl.vm.UserError(f"{ERR_EXPECTED}: consensus returned invalid demand result")
     return result
 
 
-class CapacityBook(gl.contract.Contract):
+class CapacityBook(gl.Contract):
     """
     Consensus-backed capacity admission primitive.
 
